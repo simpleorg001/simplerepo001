@@ -7,10 +7,10 @@ on:
       - reopened
       - synchronize
 jobs:
-  check-branches:
+  Check_HEAD_Branch:
     runs-on: ubuntu-latest
     steps:
-      - name: 📢 Check Source Branch
+      - name: 📢 Verify BASE and HEAD branches
         run: |
           if [[  ${{ github.base_ref }} == "main" ]]; then
             if [[ ${{ github.head_ref }} =~ ^rc/.*  ||  ${{ github.head_ref }} =~ ^hfc/.* ]]; then
