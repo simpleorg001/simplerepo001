@@ -1,5 +1,6 @@
 name: Check pull request source branch
 on:
+  workflow_dispatch:
   pull_request_target:
     types:
       - opened
@@ -12,6 +13,8 @@ jobs:
       - name: Check branches
         run: |
           if [[ ! ${{ github.head_ref }} =~ ^rc/.* ]] && [ ${{ github.base_ref }} == "main" ]; then
-            echo "Merge requests to main branch are only allowed from dev branch."
+            echo "📣📢 Merge requests to main branch are only allowed from rc/** branches."
             exit 1
+          else
+            echo "🚀📣 Ready to merge!"
           fi
