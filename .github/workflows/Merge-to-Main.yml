@@ -1,4 +1,4 @@
-name: Check pull request source branch
+name: Check Source Branch
 on:
   workflow_dispatch:
   pull_request_target:
@@ -10,13 +10,13 @@ jobs:
   check-branches:
     runs-on: ubuntu-latest
     steps:
-      - name: Check branches
+      - name: 📢 Check Source Branch
         run: |
           if [[  ${{ github.base_ref }} == "main" ]]; then
             if [[ ${{ github.head_ref }} =~ ^rc/.*  ||  ${{ github.head_ref }} =~ ^hfc/.* ]]; then
-              echo "🚀📣 Ready to merge!"
+              echo "🚀📣 Ready to merge"
             else
-              echo "📣📢 Merge requests to main branch are only allowed from rc/** branches."
+              echo "⚠️📢 Merge requests to main branch are only allowed from rc/** or hfc/** branches."
               exit 1
             fi
           fi
