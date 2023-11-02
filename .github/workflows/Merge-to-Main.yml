@@ -12,9 +12,11 @@ jobs:
     steps:
       - name: Check branches
         run: |
-          if [[ ! ${{ github.head_ref }} =~ ^rc/.*  ||  ! ${{ github.head_ref }} =~ ^hfc/.*  &&  ${{ github.base_ref }} == "main" ]]; then
-            echo "📣📢 Merge requests to main branch are only allowed from rc/** branches."
-            exit 1
-          else
-            echo "🚀📣 Ready to merge!"
+          if [[  ${{ github.base_ref }} == "main" ]]; then
+            if [[ ${{ github.head_ref }} =~ ^rc/.*  ||  ${{ github.head_ref }} =~ ^hfc/.* ]]; then
+              echo "🚀📣 Ready to merge!"
+            else
+              echo "📣📢 Merge requests to main branch are only allowed from rc/** branches."
+              exit 1
+            fi
           fi
