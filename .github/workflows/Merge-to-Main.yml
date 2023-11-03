@@ -13,6 +13,8 @@ env:
 jobs:
   Check_HEAD_Branch:
     runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: 📢 Verify BASE and HEAD branches
         run: |
