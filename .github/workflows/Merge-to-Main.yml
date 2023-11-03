@@ -6,6 +6,10 @@ on:
       - opened
       - reopened
       - synchronize
+
+env:
+    GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 jobs:
   Check_HEAD_Branch:
     runs-on: ubuntu-latest
