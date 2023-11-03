@@ -15,12 +15,6 @@ jobs:
           if [[  ${{ github.base_ref }} == "main" ]]; then
             if [[ ${{ github.head_ref }} =~ ^rc/.*  ||  ${{ github.head_ref }} =~ ^hfc/.* ]]; then
               echo "🚀📣 Ready to merge"
-            else
-            { 
-              $body = ">⚠️ Friendly reminder: ⚠️📢 Merge requests to main branch are only allowed from rc/** or hfc/** branches."
-              gh pr comment ${{ github.event.pull_request.number }} --repo ${{ github.repository }} --body "$body"
-              echo "⚠️📢 Merge requests to main branch are only allowed from rc/** or hfc/** branches."
-              exit 1
-            }
+            else { $body = ">⚠️ Friendly reminder: ⚠️📢 Merge requests to main branch are only allowed from rc/** or hfc/** branches."; gh pr comment ${{ github.event.pull_request.number }} --repo ${{ github.repository }} --body "$body"; echo "⚠️📢 Merge requests to main branch are only allowed from rc/** or hfc/** branches."; exit 1 }
             fi
           fi
