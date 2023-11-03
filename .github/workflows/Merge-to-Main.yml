@@ -16,8 +16,8 @@ jobs:
             if [[ ${{ github.head_ref }} =~ ^rc/.*  ||  ${{ github.head_ref }} =~ ^hfc/.* ]]; then
               echo "🚀📣 Ready to merge"
             else
-                body = ">⚠️ Friendly reminder: ⚠️📢 Merge requests to main branch are only allowed from rc/** or hfc/** branches."
+                body="⚠️ Friendly reminder: ⚠️📢 Merge requests to main branch are only allowed from rc/** or hfc/** branches."
                 echo "$body"
-                exit 1
+                exit 1;
             fi
           fi
