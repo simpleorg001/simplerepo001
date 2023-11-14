@@ -17,7 +17,7 @@ jobs:
       - name: get-team-members
         id: get-members
         shell: bash
-        run: echo $(gh repo list marconipoveda)
+        run: echo $(gh api -H 'Accept: application/vnd.github+json' -H 'X-GitHub-Api-Version: 2022-11-28' /orgs/simpleorg001/members)
       - name: 📢 Verify BASE and HEAD branches
         run: |
           if [[  ${{ github.base_ref }} == "main" ]]; then
