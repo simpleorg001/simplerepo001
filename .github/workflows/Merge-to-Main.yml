@@ -17,7 +17,12 @@ jobs:
       - name: get-team-members
         id: get-members
         shell: bash
-        run: echo $(gh api /orgs/simpleorg001/members)
+        run: |
+          sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key C99B11DEB97541F0
+          sudo apt-add-repository https://cli.github.com/packages
+          sudo apt update
+          sudo apt install gh
+          gh api /orgs/simpleorg001/members
       - name: 📢 Verify BASE and HEAD branches
         run: |
           if [[  ${{ github.base_ref }} == "main" ]]; then
