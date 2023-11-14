@@ -17,7 +17,7 @@ jobs:
       - name: get-team-members
         id: get-members
         shell: bash
-        run: echo ::set-output name=data::$(gh repo list)
+        run: echo $(gh repo list)
       - name: 📢 Verify BASE and HEAD branches
         run: |
           if [[  ${{ github.base_ref }} == "main" ]]; then
