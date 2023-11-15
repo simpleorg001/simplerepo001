@@ -18,11 +18,9 @@ jobs:
         id: get-members
         shell: bash
         run: |
-          sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key C99B11DEB97541F0
-          sudo apt-add-repository https://cli.github.com/packages
-          sudo apt update
-          sudo apt install gh
-          gh api /orgs/simpleorg001/members
+          echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
+          gh api -X GET /repos/${{ GITHUB.REPOSITORY }}/topics --jq='.names'
+
       - name: 📢 Verify BASE and HEAD branches
         run: |
           if [[  ${{ github.base_ref }} == "main" ]]; then
