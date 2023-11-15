@@ -16,7 +16,7 @@ jobs:
         shell: bash
         run: |
           echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
-          gh api -X GET /repos/${{ GITHUB.REPOSITORY }}/topics --jq='.names'
+          gh api -X GET /orgs/cmnhospitals/teams
 
       - name: 📢 Verify BASE and HEAD branches
         run: |
