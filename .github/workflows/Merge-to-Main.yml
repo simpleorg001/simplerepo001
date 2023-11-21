@@ -15,7 +15,7 @@ jobs:
       - name: 🔎 Looking for allowed branches
         shell: pwsh
         run: |
-          if ( ${{ github.base_ref }} -eq "main") {
+          if ( "${{ github.base_ref }}" -eq "main") {
             if ( ${{ github.head_ref }} -match "^rc/.*" -or ${{ github.head_ref }} -match "^hfc/.*") {
               gh pr merge ${{ github.event.pull_request.number }} --auto
               Write-Host "🚀📣 Ready to merge"
