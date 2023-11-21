@@ -23,7 +23,7 @@ jobs:
             ##### psudo code for allowing devops/* branches to merge directly into main, but only if the author of the PR is on the DevOps team
             elseif ( ${{ github.head_ref }} -match "^devops/.*") {
               $prAuthor = (gh pr view ${{ github.event.pull_request.number }} --repo ${{ github.repository }} --json author | ConvertFrom-Json).author.login
-              if (gh api -X GET /orgs/cmnhospitals/teams/devops/memberships/$prAuthor | ConvertFrom-Json).state -eq "active" {
+              if ((gh api -X GET /orgs/cmnhospitals/teams/devops/memberships/$prAuthor | ConvertFrom-Json).state) -eq "active" {
                 Write-Host "🤖🚀📣 Please continue Lord Commander!"
               }
               else {
