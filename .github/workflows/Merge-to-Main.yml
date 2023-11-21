@@ -8,21 +8,36 @@ on:
       - synchronize
 
 jobs:
-  Check_HEAD_Branch:
+  Merge_Validation:
+    name: 🔔 Confirm SOURCE branch is allowed
     runs-on: ubuntu-latest
     steps:
-      - name: get-team-members
-        id: get-members
-        shell: bash
+      - name: 🔎 Looking for allowed branches
+        shell: pwsh
         run: |
-          echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
-          gh api -X GET /orgs/cmnhospitals
-
-      - name: 📢 Verify BASE and HEAD branches
-        run: |
-          if [[  ${{ github.base_ref }} == "main" ]]; then
-            if [[ ${{ github.head_ref }} =~ ^rc/.*  ||  ${{ github.head_ref }} =~ ^hfc/.* ]]; then
-              echo "🚀📣 Ready to merge"
-            else { body = ">⚠️ Friendly reminder: ⚠️📢 Merge requests to main branch are only allowed from rc/** or hfc/** branches."; echo "$(body)"; exit 1; }
-            fi
-          fi
+          if ( ${{ github.base_ref }} -eq "main") {
+            if ( ${{ github.head_ref }} -match "^rc/.*" -or ${{ github.head_ref }} -match "^hfc/.*") {
+              gh pr merge ${{ github.event.pull_request.number }} --auto
+              Write-Host "🚀📣 Ready to merge"
+            }
+            ##### psudo code for allowing devops/* branches to merge directly into main, but only if the author of the PR is on the DevOps team
+            elseif ( ${{ github.head_ref }} -match "^devops/.*") {
+              $prAuthor = (gh pr view ${{ github.event.pull_request.number }} --repo ${{ github.repository }} --json author | ConvertFrom-Json).author.login
+              if ((gh api -X GET /orgs/cmnhospitals/teams/devops/memberships/$prAuthor | ConvertFrom-Json).state -eq "active")
+                Write-Host "🤖🚀📣 Please continue Lord Commander!"
+              else {
+                $body="📢 At this moment you're not allowed to merge to main. This incident will be reported to Newman.
+                Write-Host $body
+                gh pr comment ${{ github.event.pull_request.number }} --repo ${{ github.repository }} --body $body
+                Write-Host "::error::" + Your are not allowed to merge directly into ${{ github.base_ref }}"
+                exit 1  
+              }
+            }
+            else {
+              $body="📢 Friendly reminder: Merge requests to main branch are only allowed from rc/** or hfc/** branches."
+              Write-Host $body
+              gh pr comment ${{ github.event.pull_request.number }} --repo ${{ github.repository }} --body $body
+              Write-Host "::error::" + ${{ github.head_ref }} + " is not allowed to merge directly into ${{ github.base_ref }}"
+              exit 1
+            }
+          }
