@@ -17,4 +17,4 @@ jobs:
       - name: 📢 Verify BASE and HEAD branches
         shell: pwsh
         run: |
-          Write-Host "github.event.pull_request.user.login
+          Write-Host "{{ github.event.pull_request.user.login }}"
