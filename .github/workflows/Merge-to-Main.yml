@@ -6,13 +6,16 @@ on:
       - opened
       - reopened
       - synchronize
+
+env:
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  
 jobs:
   Check_HEAD_Branch:
     runs-on: ubuntu-latest
     steps:
       - name: get-team-members
         id: get-members
-        shell: pwsh
-        run: echo ::set-output name=data::$(gh repo list)
+        shell: pwsh  
       - name: 📢 Verify BASE and HEAD branches
         run: Write-Host "{{ github.event.pull_request.user.login }}"
